@@ -14,5 +14,5 @@ class MapView: UIView {
     
     @IBOutlet weak var map: MKMapView!
     
-    
+    @IBOutlet weak var deletePinBtn: UIButton!
 }

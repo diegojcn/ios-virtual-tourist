@@ -25,10 +25,10 @@ class MapViewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView.map.delegate = self
+        self.mapView.map.delegate = self
         
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(addPinToMap(longGesture:)))
-        mapView.map.addGestureRecognizer(longGesture)
+        self.mapView.map.addGestureRecognizer(longGesture)
         
         
         let fetchREquest: NSFetchRequest<Pin> = Pin.fetchRequest()
@@ -44,13 +44,28 @@ class MapViewViewController: UIViewController {
        
         
     }
+    
+    @IBAction func editMap(_ sender: Any) {
+        
+        if self.mapView.deletePinBtn.isHidden {
+            self.mapView.deletePinBtn.isHidden = false
+        } else {
+            self.mapView.deletePinBtn.isHidden = true
+        }
+        
+    }
+    
+    private func deletePin(pin : Pin) {
+        print("delete pin")
+    }
+    
 
     @objc func addPinToMap(longGesture: UILongPressGestureRecognizer) {
         
         
         if (longGesture.state == .ended) {
-            let locationInView = longGesture.location(in: mapView)
-            let locationOnMap: CLLocationCoordinate2D = mapView.map.convert(locationInView, toCoordinateFrom: mapView)
+            let locationInView = longGesture.location(in: self.mapView)
+            let locationOnMap: CLLocationCoordinate2D = self.mapView.map.convert(locationInView, toCoordinateFrom: self.mapView)
             addAnnotation(location: locationOnMap)
             dataController.savePin(latitude: locationOnMap.latitude.description, longitude: locationOnMap.longitude.description)
        }
@@ -108,11 +123,9 @@ extension MapViewViewController: MKMapViewDelegate{
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        guard let lat : String = view.annotation?.coordinate.latitude.description, let long : String = view.annotation?.coordinate.longitude.description else{
+        guard let lat : String = view.annotation?.coordinate.latitude.description, let long : String = view.annotation?.coordinate.longitude.description else {
             return
         }
-        
-        print("tapped on pin latidute:\(lat), longidute: \(long)")
         
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
@@ -120,16 +133,19 @@ extension MapViewViewController: MKMapViewDelegate{
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [sortDescriptor]
         if let result = try? dataController.viewContext.fetch(fetchRequest){
-          self.tappedPin = result[0]
+            self.tappedPin = result[0]
         }
-        performSegue(withIdentifier: "photoSegue", sender: nil)
+        
+        print("tapped on pin latidute:\(lat), longidute: \(long)")
+        if self.mapView.deletePinBtn.isHidden {
+            
+            performSegue(withIdentifier: "photoSegue", sender: nil)
+            
+        } else{
+        
+            self.deletePin(pin : self.tappedPin!)
+            
+        }
     }
     
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            if let doSomething = view.annotation?.title! {
-                print("do something")
-            }
-        }
-    }
 }

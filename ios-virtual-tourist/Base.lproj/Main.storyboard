@@ -21,20 +21,37 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGd-eF-RL8" customClass="MapView" customModule="ios_virtual_tourist" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                                 <subviews>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="PEJ-g6-TRR">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rbC-xh-hc4">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                                        <gestureRecognizers/>
-                                    </mapView>
+                                        <subviews>
+                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="aEF-hB-N8L" userLabel="Map">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                            </mapView>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MLX-PW-kCs">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="hHb-29-xhf"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Tap to delete pin"/>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="MLX-PW-kCs" firstAttribute="leading" secondItem="aEF-hB-N8L" secondAttribute="leading" id="vgL-d0-iBh"/>
+                                        </constraints>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="PEJ-g6-TRR" firstAttribute="top" secondItem="YGd-eF-RL8" secondAttribute="top" id="4wJ-f3-oH8"/>
-                                    <constraint firstItem="PEJ-g6-TRR" firstAttribute="centerX" secondItem="YGd-eF-RL8" secondAttribute="centerX" id="eGN-5c-UnQ"/>
-                                    <constraint firstItem="PEJ-g6-TRR" firstAttribute="leading" secondItem="YGd-eF-RL8" secondAttribute="leading" id="rZb-zP-MK8"/>
-                                    <constraint firstItem="PEJ-g6-TRR" firstAttribute="centerY" secondItem="YGd-eF-RL8" secondAttribute="centerY" id="wUF-gg-xJm"/>
+                                    <constraint firstItem="rbC-xh-hc4" firstAttribute="centerY" secondItem="YGd-eF-RL8" secondAttribute="centerY" id="185-p7-Ol5"/>
+                                    <constraint firstItem="rbC-xh-hc4" firstAttribute="centerX" secondItem="YGd-eF-RL8" secondAttribute="centerX" id="Ml0-2i-JC5"/>
+                                    <constraint firstItem="rbC-xh-hc4" firstAttribute="leading" secondItem="YGd-eF-RL8" secondAttribute="leading" id="Xp6-rW-Eju"/>
+                                    <constraint firstItem="rbC-xh-hc4" firstAttribute="top" secondItem="YGd-eF-RL8" secondAttribute="top" id="YMy-AZ-bYM"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="map" destination="PEJ-g6-TRR" id="9Hs-4F-Vjj"/>
+                                    <outlet property="deletePinBtn" destination="MLX-PW-kCs" id="ILI-uD-65m"/>
+                                    <outlet property="map" destination="aEF-hB-N8L" id="LXZ-EW-1PL"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -49,6 +66,16 @@
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="C9R-OX-sRz">
                         <barButtonItem key="backBarButtonItem" title="Ok" id="YdX-AC-M1e"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="nax-6M-KiC">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HsN-ta-lqO">
+                                <rect key="frame" x="233" y="7" width="71" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="editMap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LQ1-sf-lRt"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="YGd-eF-RL8" id="gR2-Pm-tHu"/>
@@ -57,12 +84,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="758" y="38"/>
+            <point key="canvasLocation" x="757.5" y="37.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TCe-wv-v50">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Ij-Zh-z9D" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="eCs-bH-fm8" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Eh4-FP-w5f">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -75,6 +101,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Ged-7r-SsK"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Ij-Zh-z9D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-124" y="38"/>
         </scene>
