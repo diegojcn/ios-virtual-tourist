@@ -23,14 +23,18 @@ class MapViewViewController: UIViewController {
     
     var pins: [Pin] = []
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.map.delegate = self
         
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(addPinToMap(longGesture:)))
         self.mapView.map.addGestureRecognizer(longGesture)
-        
-        
+        iniciateMapWithPins()
+       
+    }
+    
+    private func iniciateMapWithPins() {
         let fetchREquest: NSFetchRequest<Pin> = Pin.fetchRequest()
         let sort = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchREquest.sortDescriptors = [sort]
@@ -38,11 +42,10 @@ class MapViewViewController: UIViewController {
             pins = result
         }
         let annotations = populateMap(pinsArray: pins)
+        self.mapView.map.removeAnnotations(mapView.map.annotations)
         self.mapView.map.addAnnotations(annotations)
         self.mapView.map.reloadInputViews()
         print("Recovering Pins \(pins)")
-       
-        
     }
     
     @IBAction func editMap(_ sender: Any) {
@@ -56,10 +59,12 @@ class MapViewViewController: UIViewController {
     }
     
     private func deletePin(pin : Pin) {
-        print("delete pin")
+    
+        dataController.delete(obj: pin)
+        iniciateMapWithPins()
+       
     }
     
-
     @objc func addPinToMap(longGesture: UILongPressGestureRecognizer) {
         
         
@@ -96,11 +101,6 @@ extension MapViewViewController: MKMapViewDelegate{
         annotations.append(annotation)
         self.mapView.map.addAnnotations(annotations)
         self.mapView.map.reloadInputViews()
-    }
-    
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-    
-        print("add pin")
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
