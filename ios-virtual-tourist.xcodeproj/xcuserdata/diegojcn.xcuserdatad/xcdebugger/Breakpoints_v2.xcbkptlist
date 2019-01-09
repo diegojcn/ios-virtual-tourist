@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ios-virtual-tourist/Controller/PhotosColletctionViewController.swift"
-            timestampString = "568719685.014889"
+            timestampString = "568764616.093248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
             landmarkName = "removeSelectedPics(_:)"
             landmarkType = "7">
          </BreakpointContent>

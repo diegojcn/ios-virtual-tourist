@@ -31,7 +31,6 @@ class PhotosColletctionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         recoverListOfImages(pin: self.pin)
         let annotations = populateMap(pinsArray: [self.pin])
         self.photoView.photosCollectionView.allowsMultipleSelection = true
@@ -39,14 +38,18 @@ class PhotosColletctionViewController: UIViewController {
         self.photoView.mapView.addAnnotations(annotations)
         self.photoView.mapView.reloadInputViews()
         
-        
-        
     }
     
     
     @IBAction func newCollection(_ sender: Any) {
         
+        for (_, image) in images{
         
+            dataController.delete(obj: image)
+        }
+        images.removeAll()
+        newPhotoCollection(selectedPin: self.pin)
+        self.photoView.photosCollectionView.reloadData()
         
     }
     
@@ -174,7 +177,8 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
        
         if let photos = self.photos {
             
-            let photoDictionary : [String:AnyObject] = photos[indexPath.item]
+            let randomPhotoIndex = Int(arc4random_uniform(UInt32(photos.count)))
+            let photoDictionary : [String:AnyObject] = photos[randomPhotoIndex]
             
             guard let imageUrlString = photoDictionary[Constants.FlickrResponseKeys.MediumURL] as? String else {
                 displayError("Cannot find key '\(Constants.FlickrResponseKeys.MediumURL)' in \(photoDictionary)")
