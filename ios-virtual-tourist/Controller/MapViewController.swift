@@ -35,17 +35,13 @@ class MapViewViewController: UIViewController {
     }
     
     private func iniciateMapWithPins() {
-        let fetchREquest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        let sort = NSSortDescriptor(key: "creationDate", ascending: false)
-        fetchREquest.sortDescriptors = [sort]
-        if let result = try? dataController.viewContext.fetch(fetchREquest){
-            pins = result
-        }
+        
+        self.pins = dataController.searchPin(key: "creationDate", ascending: false, format: nil, argumementArray: nil)
+        
         let annotations = populateMap(pinsArray: pins)
         self.mapView.map.removeAnnotations(mapView.map.annotations)
         self.mapView.map.addAnnotations(annotations)
         self.mapView.map.reloadInputViews()
-        print("Recovering Pins \(pins)")
     }
     
     @IBAction func editMap(_ sender: Any) {
@@ -127,16 +123,9 @@ extension MapViewViewController: MKMapViewDelegate{
             return
         }
         
-        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-        let predicate = NSPredicate(format: "latitude == %@ && longitude == %@", argumentArray: [lat, long])
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        if let result = try? dataController.viewContext.fetch(fetchRequest){
-            self.tappedPin = result[0]
-        }
+        let result : [Pin] = dataController.searchPin(key: "creationDate", ascending: false, format: "latitude == %@ && longitude == %@", argumementArray: [lat, long])
+        self.tappedPin = result[0]
         
-        print("tapped on pin latidute:\(lat), longidute: \(long)")
         if self.mapView.deletePinBtn.isHidden {
             
             performSegue(withIdentifier: "photoSegue", sender: nil)

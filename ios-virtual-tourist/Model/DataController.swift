@@ -92,6 +92,22 @@ extension DataController {
         return images
     }
     
+    func searchPin(key: String, ascending: Bool, format: String?, argumementArray : [Any]?) -> [Pin]{
+        
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: key, ascending: ascending)
+        
+        if let format = format, let argumementArray = argumementArray {
+            
+            let predicate = NSPredicate(format: format, argumentArray: argumementArray)
+            fetchRequest.predicate = predicate
+        }
+        
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        return try! viewContext.fetch(fetchRequest)
+        
+    }
+    
     func saveImage(pin : Pin, imageData : Data) -> Image{
         let image = Image(context: viewContext)
         image.pin = pin

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ios-virtual-tourist/Controller/PhotosColletctionViewController.swift"
-            timestampString = "568764616.093248"
+            filePath = "ios-virtual-tourist/Controller/MapViewController.swift"
+            timestampString = "568803721.740062"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "removeSelectedPics(_:)"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "iniciateMapWithPins()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

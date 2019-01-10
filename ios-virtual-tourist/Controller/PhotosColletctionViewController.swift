@@ -60,23 +60,25 @@ class PhotosColletctionViewController: UIViewController {
         for (key, value) in selectedIndex{
             
             let imageToDelete : Image! = self.images[key]
+            self.dataController.delete(obj: imageToDelete)
             self.images.removeValue(forKey: key)
             values.append(value)
             
-            print("deleting key\(key) value \(value)")
         }
-        self.photoView.photosCollectionView.deleteItems(at: values)
-        self.photoView.photosCollectionView.reloadData()
         
+        self.photoView.photosCollectionView.deleteItems(at: values)
+        self.images.removeAll()
+        self.recoverListOfImages(pin: self.pin)
+        self.selectedIndex.removeAll()
+        self.photoView.switchbuttons()
+
     }
     
     private func recoverListOfImages(pin: Pin) {
         let imageList : [Image] = dataController.findImages(pin: pin)
         
         for (index, item) in imageList.enumerated() {
-            
            images[index] = item
-            
         }
         
         if (images.count > 0) {
@@ -135,12 +137,14 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
         
         guard let count = self.photos?.count else {
             if self.images.count > 0 {
-                print("numberOfItemsInSection self.images.count:\(self.images.count)")
+                
                 return self.images.count
             }
+            
             return 0
         }
         if count < 20 {
+            
             return count
         }
         
@@ -154,7 +158,6 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
         }
         selectedIndex[indexPath.row] = indexPath
         
-        print("didSelectItemAt\(selectedIndex)")
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -164,7 +167,7 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
         if (selectedIndex.count == 0){
             self.photoView.switchbuttons()
         }
-        print("didDeselectItemAt\(selectedIndex)")
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
