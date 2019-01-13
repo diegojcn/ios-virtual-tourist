@@ -97,7 +97,9 @@ class PhotosColletctionViewController: UIViewController {
             Constants.FlickrParameterKeys.BoundingBox: selectedPin.generateMaxMinLatLog(),
             Constants.FlickrParameterKeys.Extras: Constants.FlickrParameterValues.MediumURL,
             Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
-            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback
+            Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
+            Constants.FlickrParameterKeys.Page: Int(arc4random_uniform(UInt32(200))),
+            Constants.FlickrParameterKeys.PerPage: 20
             ] as [String:AnyObject]
         
         
@@ -143,12 +145,8 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
             
             return 0
         }
-        if count < 20 {
-            
-            return count
-        }
         
-        return 20
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -180,8 +178,7 @@ extension PhotosColletctionViewController : UICollectionViewDataSource{
        
         if let photos = self.photos {
             
-            let randomPhotoIndex = Int(arc4random_uniform(UInt32(photos.count)))
-            let photoDictionary : [String:AnyObject] = photos[randomPhotoIndex]
+            let photoDictionary : [String:AnyObject] = photos[indexPath.row]
             
             guard let imageUrlString = photoDictionary[Constants.FlickrResponseKeys.MediumURL] as? String else {
                 displayError("Cannot find key '\(Constants.FlickrResponseKeys.MediumURL)' in \(photoDictionary)")

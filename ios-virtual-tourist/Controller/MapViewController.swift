@@ -46,11 +46,7 @@ class MapViewViewController: UIViewController {
     
     @IBAction func editMap(_ sender: Any) {
         
-        if self.mapView.deletePinBtn.isHidden {
-            self.mapView.deletePinBtn.isHidden = false
-        } else {
-            self.mapView.deletePinBtn.isHidden = true
-        }
+        self.mapView.deletePinBtn.isHidden = !self.mapView.deletePinBtn.isHidden
         
     }
     
@@ -64,7 +60,7 @@ class MapViewViewController: UIViewController {
     @objc func addPinToMap(longGesture: UILongPressGestureRecognizer) {
         
         
-        if (longGesture.state == .ended) {
+        if longGesture.state == .ended {
             let locationInView = longGesture.location(in: self.mapView)
             let locationOnMap: CLLocationCoordinate2D = self.mapView.map.convert(locationInView, toCoordinateFrom: self.mapView)
             addAnnotation(location: locationOnMap)
